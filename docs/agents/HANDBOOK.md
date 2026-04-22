@@ -1,6 +1,6 @@
 # {{PRODUCT_NAME}} — Agent Handbook
 
-> Product-level agent operating standards. See also the [company-wide handbook](https://github.com/fratei/creativware-hq/blob/main/docs/agents/HANDBOOK.md).
+> Product-level agent operating standards. See also the [company-wide handbook](https://github.com/fratei/creative-ware-hq/blob/main/docs/agents/HANDBOOK.md).
 
 ## Product Agents
 
@@ -15,7 +15,7 @@
 
 ## Operating Rules
 
-- Follow the [company-wide handbook](https://github.com/fratei/creativware-hq/blob/main/docs/agents/HANDBOOK.md)
+- Follow the [company-wide handbook](https://github.com/fratei/creative-ware-hq/blob/main/docs/agents/HANDBOOK.md)
 - Auto-approve safe changes (src/, docs/, tests/)
 - Escalate risky changes (workflows, infra, billing, auth)
 - Max 5 auto-merges per day

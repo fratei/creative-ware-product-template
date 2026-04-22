@@ -95,7 +95,7 @@ jobs:
             fs.writeFileSync(stateFile, `# Agent Fleet Metrics\n\n- Last run: ${now}\n\n---\n*Last updated: ${now}*\n`);
             try {
               execSync('git config user.name "CreativeWare Bot"');
-              execSync('git config user.email "bot@creativware.ai"');
+              execSync('git config user.email "bot@creative-ware.ai"');
               execSync(`git add ${stateFile}`);
               const diff = execSync('git diff --cached --name-only').toString().trim();
               if (diff) {

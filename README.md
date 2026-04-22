@@ -7,7 +7,7 @@
 | | |
 |---|---|
 | **Product** | {{PRODUCT_NAME}} |
-| **Company** | [CreativeWare](https://github.com/fratei/creativware-hq) |
+| **Company** | [CreativeWare](https://github.com/fratei/creative-ware-hq) |
 | **Owner** | [@fratei](https://github.com/fratei) |
 | **Status** | 🏗️ Building |
 
@@ -41,10 +41,10 @@ See [Agent Dashboard](docs/agents/DASHBOARD.md) for live status.
 
 ## Links
 
-- [CreativeWare HQ](https://github.com/fratei/creativware-hq)
-- [Product Card](https://github.com/fratei/creativware-hq/blob/main/products/{{PRODUCT_SLUG}}.md)
+- [CreativeWare HQ](https://github.com/fratei/creative-ware-hq)
+- [Product Card](https://github.com/fratei/creative-ware-hq/blob/main/products/{{PRODUCT_SLUG}}.md)
 - [Agent Handbook](docs/agents/HANDBOOK.md)
 - [Strategy](strategy/README.md)
 
 ---
-*Part of [CreativeWare](https://github.com/fratei/creativware-hq) — Autonomous AI Company*
+*Part of [CreativeWare](https://github.com/fratei/creative-ware-hq) — Autonomous AI Company*
