@@ -18,4 +18,4 @@ This template migrates from bespoke agent logic to the CreativeWare reusable fra
 
 ## Temporary pin note
 
-`creative-ware-hq` does not currently expose a `v1` tag in this environment, so reusable workflow references are temporarily pinned to `@main` with TODO markers in each migrated workflow.
+At migration time, `fratei/creative-ware-hq` did not yet expose a `v1` git tag, so reusable workflow references are temporarily pinned to `@main` with TODO markers in each migrated workflow.

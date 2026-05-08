@@ -45,7 +45,7 @@ See [Agent Dashboard](docs/agents/DASHBOARD.md) for live status.
 
 This template is wired to the CreativeWare reusable agent framework v1 rollout.
 Until the `v1` tag is published, workflow consumers temporarily reference `@main`.
-If any framework links still point to `main` during rollout, update them alongside the workflow refs when `v1` is tagged.
+When `v1` is tagged, switch both workflow `uses: ...@main` references and config references in `config/agents.config.json` (`$schema` and `$inherit_from`) to `v1`.
 After the tag is published, `template-sync.yml` (in CreativeWare HQ) will open automated upgrade PRs in derived product repositories for future framework releases.
 
 ## Links

@@ -5,7 +5,10 @@ on:
     - cron: "15 */6 * * *"
   workflow_dispatch:
     inputs:
-      agent: { type: choice, options: [all, cpo, cfo, cto], default: all }
+      agent:
+        type: choice
+        options: [all, cpo, cfo, cto]
+        default: all
   repository_dispatch:
     types: [agent-fleet-trigger]
 permissions:
