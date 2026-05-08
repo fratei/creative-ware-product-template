@@ -1,6 +1,6 @@
 {
-  "$schema": "https://github.com/fratei/creative-ware-hq/blob/v1/framework/schemas/autonomy-tiers.json",
-  "$inherit_from": "fratei/creative-ware-hq@v1:config/agents.config.json",
+  "$schema": "https://github.com/fratei/creative-ware-hq/blob/main/framework/schemas/autonomy-tiers.json",
+  "$inherit_from": "fratei/creative-ware-hq@main:config/agents.config.json",
   "owner": {
     "primary": "fratei",
     "decision_sla_hours": 48,
