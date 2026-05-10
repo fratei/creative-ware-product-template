@@ -39,6 +39,15 @@ This product runs an autonomous agent fleet:
 
 See [Agent Dashboard](docs/agents/DASHBOARD.md) for live status.
 
+## Framework Version
+
+[![Framework Version](https://img.shields.io/badge/framework-main-orange)](./framework-version)
+
+This template is wired to the CreativeWare reusable agent framework v1 rollout.
+Until the `v1` tag is published, workflow consumers temporarily reference `@main`.
+When `v1` is tagged, switch both workflow `uses: ...@main` references and config references in `config/agents.config.json` (`$schema` and `$inherit_from`) to `v1`.
+After the tag is published, `template-sync.yml` (in CreativeWare HQ) will open automated upgrade PRs in derived product repositories for future framework releases.
+
 ## Links
 
 - [CreativeWare HQ](https://github.com/fratei/creative-ware-hq)

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://github.com/fratei/creative-ware-hq/blob/main/framework/schemas/agent-state.json",
+  "agent": "cpo",
+  "last_run_utc": null,
+  "pending_handoffs": [],
+  "metrics_30d": {
+    "decisions": 0,
+    "issues_opened": 0,
+    "prs_reviewed": 0
+  }
+}

@@ -1,23 +1,14 @@
-# {{PRODUCT_NAME}} — Agent Handbook
+# {{PRODUCT_NAME}} Agent Handbook
 
-> Product-level agent operating standards. See also the [company-wide handbook](https://github.com/fratei/creative-ware-hq/blob/main/docs/agents/HANDBOOK.md).
+This product inherits the company-wide agent operating standards from
+[CreativeWare HQ Handbook](https://github.com/fratei/creative-ware-hq/blob/main/docs/agents/HANDBOOK.md).
 
-## Product Agents
+## Product-Specific Overrides
 
-| Agent | Role |
-|-------|------|
-| 📦 CPO | Product roadmap, feature prioritization |
-| 🔧 CTO | Technical architecture, tech debt |
-| 💰 CFO | Financial analysis |
-| 💻 Engineering | Implementation via @copilot |
-| 🧪 QA | Testing, quality gates |
-| ⚙️ DevOps | CI/CD, monitoring |
+_None yet. Document any product-specific deviations from the company handbook here._
 
-## Operating Rules
+## Linked Resources
 
-- Follow the [company-wide handbook](https://github.com/fratei/creative-ware-hq/blob/main/docs/agents/HANDBOOK.md)
-- Auto-approve safe changes (src/, docs/, tests/)
-- Escalate risky changes (workflows, infra, billing, auth)
-- Max 5 auto-merges per day
-- State persists in `strategy/agent-state/`
-- Outcomes tracked in `strategy/outcomes/`
+- [Agent Charters](./charters/) — copied from framework v1
+- [Framework Version](../../framework-version)
+- [Local Config Overrides](../../config/agents.config.json)
