@@ -21,6 +21,7 @@ Use this checklist when setting up a new CreativeWare product repository for ful
 
 ## 4) MCP / third-party integration readiness
 - [ ] MCP tools enabled in repository/organization settings for agents that need them.
+- [ ] GitHub Actions policy allows reusable workflows from `fratei/creative-ware-hq` (required for `product-agent-fleet`, `observability-agent`, and `pr-review`).
 - [ ] Third-party API keys stored as secrets (never committed to repo).
 - [ ] Least-privilege token scopes verified.
 
@@ -39,3 +40,14 @@ Use this checklist when setting up a new CreativeWare product repository for ful
 ## 7) Post-bootstrap validation
 - [ ] Run `agent-readiness-audit` workflow in `creative-ware-hq` and confirm this repo shows all ✅.
 - [ ] Trigger `product-agent-fleet` manually and confirm it runs without errors.
+
+## 8) Phase 2 outcome audit (2026-05-10)
+- [x] Required bootstrap files are present and wired: `AGENTS.md`, `.github/copilot-instructions.md`, `.devcontainer/devcontainer.json`, `.env.template`, `config/agents.config.json`, and all expected workflows/templates.
+- [x] Parallel PR safety controls are present (`concurrency` configured with queue semantics on long-running workflows).
+- [x] CI robustness for template repos is in place (`ci-cd.yml` and `copilot-setup-steps.yml` skip Node steps when no `package.json`/`package-lock.json` exists).
+- [ ] Resolve recurring workflow `startup_failure` on reusable-workflow consumers (examples: runs `25630548099`, `25632618240`).
+- [ ] Remove manual workflow approval friction causing `action_required` runs on Copilot PR branches (example: run `25634384981`).
+- [ ] Create and track follow-up tasks/issues for remaining admin work:
+  - [ ] `[AUTONOMY] Enable reusable workflow access from fratei/creative-ware-hq`
+  - [ ] `[AUTONOMY] Remove manual approval gate for trusted Copilot-triggered workflows`
+  - [ ] `[AUTONOMY] Run HQ agent-readiness-audit and attach evidence links`
