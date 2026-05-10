@@ -18,36 +18,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Detect whether this is a Node.js project before running npm steps.
+      # Template repos may not yet have package.json / package-lock.json.
+      - name: Detect Node project
+        id: node-check
+        run: |
+          if [ -f package.json ] && [ -f package-lock.json ]; then
+            echo "has_node=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_node=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️ No package.json / package-lock.json found – skipping Node steps."
+          fi
+
       - name: Setup Node.js
+        if: steps.node-check.outputs.has_node == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          elif [ -f package.json ]; then
-            npm install
-          else
-            echo "No package.json detected; skipping dependency install."
-          fi
+        if: steps.node-check.outputs.has_node == 'true'
+        run: npm ci
 
       - name: Lint
-        run: |
-          if [ -f package.json ]; then
-            npm run lint --if-present
-          else
-            echo "No package.json detected; skipping lint."
-          fi
+        if: steps.node-check.outputs.has_node == 'true'
+        run: npm run lint --if-present
 
       - name: Test
-        run: |
-          if [ -f package.json ]; then
-            npm test --if-present
-          else
-            echo "No package.json detected; skipping tests."
-          fi
+        if: steps.node-check.outputs.has_node == 'true'
+        run: npm test --if-present
 
   # ─── Push to main: build + deploy ────────────────────────────────────
   deploy:
@@ -56,28 +55,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Detect whether this is a Node.js project before running npm steps.
+      # Template repos may not yet have package.json / package-lock.json.
+      - name: Detect Node project
+        id: node-check
+        run: |
+          if [ -f package.json ] && [ -f package-lock.json ]; then
+            echo "has_node=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_node=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️ No package.json / package-lock.json found – skipping Node steps."
+          fi
+
       - name: Setup Node.js
+        if: steps.node-check.outputs.has_node == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          elif [ -f package.json ]; then
-            npm install
-          else
-            echo "No package.json detected; skipping dependency install."
-          fi
+        if: steps.node-check.outputs.has_node == 'true'
+        run: npm ci
 
       - name: Build
-        run: |
-          if [ -f package.json ]; then
-            npm run build --if-present
-          else
-            echo "No package.json detected; skipping build."
-          fi
+        if: steps.node-check.outputs.has_node == 'true'
+        run: npm run build --if-present
 
       # TODO: Add deployment steps specific to this product
       - name: Deploy placeholder
