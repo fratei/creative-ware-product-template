@@ -9,6 +9,11 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+
+concurrency:
+  group: pr-review-${{ github.event.pull_request.number || github.ref_name || 'schedule' }}
+  cancel-in-progress: false
+
 jobs:
   pr-pipeline:
     uses: fratei/creative-ware-hq/.github/workflows/reusable-pr-pipeline.yml@main

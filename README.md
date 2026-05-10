@@ -52,7 +52,10 @@ After the tag is published, `template-sync.yml` (in CreativeWare HQ) will open a
 
 - [CreativeWare HQ](https://github.com/fratei/creative-ware-hq)
 - [Product Card](https://github.com/fratei/creative-ware-hq/blob/main/products/{{PRODUCT_SLUG}}.md)
+- [Agent Entry Point](AGENTS.md)
 - [Agent Handbook](docs/agents/HANDBOOK.md)
+- [Agent Dashboard](docs/agents/DASHBOARD.md)
+- [Autonomy Admin Checklist](docs/agents/AUTONOMY-ADMIN-CHECKLIST.md)
 - [Strategy](strategy/README.md)
 
 ---

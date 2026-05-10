@@ -6,6 +6,11 @@ on:
   workflow_dispatch: {}
 permissions:
   contents: write
+
+concurrency:
+  group: observability-${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   observability:
     uses: fratei/creative-ware-hq/.github/workflows/reusable-observability.yml@main
