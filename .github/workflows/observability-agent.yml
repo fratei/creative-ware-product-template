@@ -18,4 +18,3 @@ jobs:
       product_name: "{{PRODUCT_NAME}}"
       dashboard_path: docs/agents/DASHBOARD.md
     secrets: inherit
-    timeout-minutes: 15

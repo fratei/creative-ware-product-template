@@ -25,4 +25,3 @@ jobs:
     with:
       agent: ${{ inputs.agent || 'all' }}
     secrets: inherit
-    timeout-minutes: 30
