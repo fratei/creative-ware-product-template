@@ -17,4 +17,7 @@ concurrency:
 jobs:
   pr-pipeline:
     uses: fratei/creative-ware-hq/.github/workflows/reusable-pr-pipeline.yml@main
+    with:
+      owner: ${{ github.repository_owner }}
+      repo: ${{ github.event.repository.name }}
     secrets: inherit

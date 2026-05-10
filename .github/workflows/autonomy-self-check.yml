@@ -1,0 +1,139 @@
+name: "🩺 Autonomy Self-Check"
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"   # Every Monday at 08:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: autonomy-self-check
+  cancel-in-progress: false
+
+jobs:
+  self-check:
+    name: Validate agent autonomy readiness
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required bootstrap files
+        id: file-check
+        run: |
+          missing=()
+          for f in \
+            AGENTS.md \
+            .github/copilot-instructions.md \
+            .devcontainer/devcontainer.json \
+            .env.template \
+            config/agents.config.json \
+            docs/agents/AUTONOMY-ADMIN-CHECKLIST.md \
+            docs/agents/HANDBOOK.md \
+            docs/agents/DASHBOARD.md \
+            .github/workflows/ci-cd.yml \
+            .github/workflows/copilot-setup-steps.yml \
+            .github/workflows/pr-review.yml \
+            .github/workflows/product-agent-fleet.yml \
+            .github/workflows/observability-agent.yml \
+            .github/ISSUE_TEMPLATE/agent-task.yml \
+            .github/pull_request_template.md \
+            strategy/agent-state/cpo.json \
+            strategy/agent-state/cfo.json \
+            strategy/agent-state/cto.json; do
+            [ -f "$f" ] || missing+=("$f")
+          done
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "missing_files=${missing[*]}" >> "$GITHUB_OUTPUT"
+            echo "has_missing=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_missing=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for unresolved placeholders in non-template files
+        id: placeholder-check
+        run: |
+          # Scan files that should NOT have placeholders after bootstrap.
+          # AGENTS.md, README.md etc. should keep them in the template repo itself,
+          # so we only alert if critical workflow/config files have leftover tokens.
+          bad_files=()
+          for f in \
+            config/agents.config.json \
+            .github/workflows/ci-cd.yml \
+            strategy/agent-state/cpo.json \
+            strategy/agent-state/cfo.json \
+            strategy/agent-state/cto.json; do
+            [ -f "$f" ] && grep -q '{{' "$f" 2>/dev/null && bad_files+=("$f")
+          done
+          if [ ${#bad_files[@]} -gt 0 ]; then
+            echo "placeholder_files=${bad_files[*]}" >> "$GITHUB_OUTPUT"
+            echo "has_placeholders=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_placeholders=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check agent state files are valid JSON
+        id: json-check
+        run: |
+          bad_json=()
+          for f in strategy/agent-state/*.json config/agents.config.json; do
+            [ -f "$f" ] || continue
+            python3 -m json.tool "$f" > /dev/null 2>&1 || bad_json+=("$f")
+          done
+          if [ ${#bad_json[@]} -gt 0 ]; then
+            echo "bad_json=${bad_json[*]}" >> "$GITHUB_OUTPUT"
+            echo "has_bad_json=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_bad_json=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Report results
+        id: report
+        run: |
+          problems=()
+          [ "${{ steps.file-check.outputs.has_missing }}" == "true" ] && \
+            problems+=("Missing bootstrap files: ${{ steps.file-check.outputs.missing_files }}")
+          [ "${{ steps.placeholder-check.outputs.has_placeholders }}" == "true" ] && \
+            problems+=("Unresolved placeholders in config/workflow files: ${{ steps.placeholder-check.outputs.placeholder_files }}")
+          [ "${{ steps.json-check.outputs.has_bad_json }}" == "true" ] && \
+            problems+=("Invalid JSON in agent state: ${{ steps.json-check.outputs.bad_json }}")
+
+          if [ ${#problems[@]} -gt 0 ]; then
+            echo "has_problems=true" >> "$GITHUB_OUTPUT"
+            printf '%s\n' "${problems[@]}" > /tmp/problems.txt
+            cat /tmp/problems.txt
+          else
+            echo "has_problems=false" >> "$GITHUB_OUTPUT"
+            echo "✅ All autonomy readiness checks passed."
+          fi
+
+      - name: Open issue on failure
+        if: steps.report.outputs.has_problems == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.AGENT_PAT || secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const problems = fs.readFileSync('/tmp/problems.txt', 'utf8').trim();
+            const title = `[AUTONOMY] Self-check failure — ${new Date().toISOString().slice(0,10)}`;
+            const body = `## 🩺 Autonomy Self-Check Failed\n\nThe weekly autonomy readiness self-check detected problems:\n\n\`\`\`\n${problems}\n\`\`\`\n\n**Action required:** Review and resolve each item against [AUTONOMY-ADMIN-CHECKLIST.md](../../blob/main/docs/agents/AUTONOMY-ADMIN-CHECKLIST.md).\n\n*Generated by autonomy-self-check workflow — ${new Date().toISOString()}*`;
+            // Avoid duplicate open issues
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'autonomy/self-check',
+              per_page: 5,
+            });
+            if (existing.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['autonomy/self-check'],
+              });
+            }
