@@ -1,0 +1,13 @@
+{
+  "name": "{{PRODUCT_NAME}}",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "postCreateCommand": "if [ -f package.json ] && [ -f package-lock.json ]; then npm ci; fi",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.trimTrailingWhitespace": true,
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}

@@ -14,9 +14,15 @@ on:
 permissions:
   contents: read
   issues: write
+
+concurrency:
+  group: product-fleet-${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   product-fleet:
     uses: fratei/creative-ware-hq/.github/workflows/reusable-product-fleet.yml@main
     with:
       agent: ${{ inputs.agent || 'all' }}
     secrets: inherit
+    timeout-minutes: 30
