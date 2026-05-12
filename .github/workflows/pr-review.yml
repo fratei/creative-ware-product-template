@@ -4,7 +4,7 @@
 # resolve because no `v1` tag exists yet. Until that tag is published this consumer is
 # replaced with a placeholder no-op so PR checks stay green and scheduled runs stop
 # producing `startup_failure` noise.
-name: "🔍 PR Review & Auto-Merge"
+name: "🔍 PR Review (Degraded — placeholder)"
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
