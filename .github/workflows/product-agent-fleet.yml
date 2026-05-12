@@ -1,8 +1,10 @@
-# TODO: Switch @main to @v1 once framework v1.0.0 is tagged in fratei/creative-ware-hq.
+# TODO: Switch back to reusable workflow once `fratei/creative-ware-hq` publishes the `v1` tag.
+# The reusable workflow `reusable-product-fleet.yml@main` internally references
+# `fratei/creative-ware-hq/.github/actions/load-config@v1`, which fails to resolve because
+# no `v1` tag exists yet. Until that tag is published this consumer is replaced with a
+# placeholder no-op so scheduled runs stop producing `startup_failure` noise.
 name: "🏢 Product Agent Fleet"
 on:
-  schedule:
-    - cron: "15 */6 * * *"
   workflow_dispatch:
     inputs:
       agent:
@@ -20,8 +22,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  product-fleet:
-    uses: fratei/creative-ware-hq/.github/workflows/reusable-product-fleet.yml@main
-    with:
-      agent: ${{ inputs.agent || 'all' }}
-    secrets: inherit
+  product-fleet-placeholder:
+    name: Product fleet (degraded — awaiting HQ v1)
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Note degraded mode
+        run: |
+          echo "ℹ️ Product Agent Fleet is in placeholder mode."
+          echo "   Reason: fratei/creative-ware-hq has no 'v1' tag yet, so the reusable"
+          echo "           workflow 'reusable-product-fleet.yml@main' fails at startup."
+          echo "   Action: Once HQ publishes 'v1', restore the reusable-workflow consumer"
+          echo "           and re-enable the scheduled trigger."
+          echo "   See: docs/agents/AUTONOMY-ADMIN-CHECKLIST.md (section 9)."
